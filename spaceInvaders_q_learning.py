@@ -37,7 +37,7 @@ class SpaceInvaders_agent:
         self.epsilon = max(self.final_epsilon, self.epsilon - self.epsilon_decay)
 
 def train_agent(n_repetitions=10):
-        env = gym.make("CartPole-v1")
+        env = gym.make("Taxi-v3")
         env = gym.wrappers.RecordEpisodeStatistics(env, buffer_length=n_repetitions)
         agent = SpaceInvaders_agent(
             env= env,
@@ -49,13 +49,11 @@ def train_agent(n_repetitions=10):
         
         for episode in tqdm(range(n_repetitions)):
             obs, info = env.reset()
-            obs = tuple(obs)
             terminated = False
             
             while not terminated:
                 action = agent.get_action(env, obs)
                 next_obs, reward, terminated, truncated, info = env.step(action)
-                next_obs = tuple(next_obs)
      
                 agent.update(obs, action, reward, terminated, next_obs)
                 obs = next_obs
